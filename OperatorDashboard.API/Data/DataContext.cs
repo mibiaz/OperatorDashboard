@@ -8,5 +8,6 @@ namespace OperatorDashboard.API.Data
         public DataContext(DbContextOptions<DataContext> options) : base (options){}
 
         public DbSet<ClientsLog> ClientsLog { get; set; }
+        
     }
 }
