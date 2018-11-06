@@ -1,0 +1,32 @@
+<div class="login-register" style="background-image:url(../../../../assets/login-register.jpg);">
+    <div *ngIf="!registerMode" class="login-box card">
+        <div class="card-body">
+            <form #loginForm="ngForm" class="form-horizontal form-material" id="loginform" (ngSubmit)="login()">
+                <h3 class="box-title m-b-20">Sign In</h3>
+                <div class="form-group ">
+                    <div class="col-xs-12">
+                        <input class="form-control" type="text" required="" placeholder="Username" name="username" [(ngModel)]="model.username"> </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input class="form-control" type="password" required="" placeholder="Password" name="password" [(ngModel)]="model.password"> </div>
+                </div>                
+                <div class="form-group text-center">
+                    <div class="col-xs-12 p-b-20">
+                        <button [disabled]="!loginForm.valid" class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Log In</button>
+                    </div>
+                </div>                
+                <div class="form-group m-b-0">
+                    <div class="col-sm-12 text-center">
+                        Don't have an account? <a (click)="registerToggle()" class="text-info m-l-5"><b>Ask Mark</b></a>
+                    </div>
+                </div>
+            </form>            
+        </div>
+    </div>
+    <div *ngIf="registerMode" class="login-box card">
+        <div class="card-body">
+            <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+        </div>
+    </div>
+</div>
