@@ -23,7 +23,7 @@ namespace OperatorDashboard.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetValues()
         {
-            var values = await _context.ClientsLog.GroupBy(x => x.Username).Select(g => new { username = g.Key, count = g.Count()}).ToListAsync();
+            var values = await _context.ClientsLog.FromSql("select ClientsLog.Username,COUNT(CASE WHEN Action=4 then 1 end) AS AlarmsReceived, COUNT(CASE WHEN Action=3 then 1 end) AS AlarmsProcessed FROM CameraActions join ClientsLog on ClientsLog.Session=CameraActions.Session where DATEADD(HH, ROUND(DATEDIFF(n, CameraActions.StartTime, CameraActions.EndTime) / 60.1, 0), CameraActions.StartTime) between '2018-11-05 18:00:00' and  '2018-11-06 19:00:00' GROUP BY ClientsLog.Username").ToListAsync();
 
             return Ok(values);
         }
