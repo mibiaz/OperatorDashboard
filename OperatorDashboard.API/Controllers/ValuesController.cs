@@ -20,11 +20,25 @@ namespace OperatorDashboard.API.Controllers
 
         }
         // GET api/values
+        // DATEADD(HH, ROUND(DATEDIFF(n, CameraActions.StartTime, CameraActions.EndTime) / 60.1, 0), CameraActions.ReqStartTime) between '2018-11-05 18:00:00' and  '2018-11-06 05:59:00'
+        // ca.ReqStartTime.AddHours(Math.Round(SqlServerDbFunctionsExtensions.DateDiffMinute(dfunc, ca.StartTime, ca.EndTime) / 60.1, 0))
         [HttpGet]
         public async Task<IActionResult> GetValues()
         {
-            var values = await _context.ClientsLog.FromSql("select ClientsLog.Username,COUNT(CASE WHEN Action=4 then 1 end) AS AlarmsReceived, COUNT(CASE WHEN Action=3 then 1 end) AS AlarmsProcessed FROM CameraActions join ClientsLog on ClientsLog.Session=CameraActions.Session where DATEADD(HH, ROUND(DATEDIFF(n, CameraActions.StartTime, CameraActions.EndTime) / 60.1, 0), CameraActions.StartTime) between '2018-11-05 18:00:00' and  '2018-11-06 19:00:00' GROUP BY ClientsLog.Username").ToListAsync();
-
+            DbFunctions dfunc = null;
+            DateTime dt1 = new DateTime(2018, 11, 09, 18, 00, 00);
+            DateTime dt2 = new DateTime(2018, 11, 09, 19, 00, 00);
+            var values = await (from ca in _context.CameraActions
+                                join cl in _context.ClientsLog on ca.Session equals cl.Session         
+                                where ca.StartTime.AddHours(Math.Round(SqlServerDbFunctionsExtensions.DateDiffMinute(dfunc, ca.StartTime, ca.EndTime) / 60.1, 0)) >= dt1 && ca.StartTime.AddHours(Math.Round(SqlServerDbFunctionsExtensions.DateDiffMinute(dfunc, ca.StartTime, ca.EndTime) / 60.1, 0)) <= dt2                                                           
+                                select new { cl.Username, ca.Action} into x
+                                group x by new {x.Username} into g
+                                select new 
+                                {
+                                    Username = g.Key.Username,
+                                    AlarmsReceived = g.Sum(x => x.Action == 4 ? 1 : 0),
+                                    AlarmsProcessed = g.Sum(x => x.Action == 3 ? 1 : 0)
+                                }).ToListAsync();
             return Ok(values);
         }
 

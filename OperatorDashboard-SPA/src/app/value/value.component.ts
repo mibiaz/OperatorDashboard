@@ -10,24 +10,19 @@ declare const require: any;
   styleUrls: ['./value.component.css']
 })
 export class ValueComponent implements OnInit {
-  masonryItems = [
-      {title: 'item 1'},
-      {title: 'item 2'},
-      {title: 'item 3'},
-      {title: 'item 4'}
-  ];
-
   title = 'Operator Dashboard';
 
   options: any;
+  values: any;
   updateOptions: any;
 
   private value: number;
   private timer: any;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
+      this.getValues();
 
       $(document).ready(function() {
           const $grid = $('.grid').masonry({
@@ -46,6 +41,14 @@ export class ValueComponent implements OnInit {
                   $('#op1').css('background-color', '#FF0000').fadeIn(1000);
               });
           }
+      });
+  }
+
+  getValues() {
+      this.http.get('http://localhost:5000/api/values').subscribe(response => {
+          this.values = response;
+      }, error => {
+          console.log(error);
       });
   }
 }
