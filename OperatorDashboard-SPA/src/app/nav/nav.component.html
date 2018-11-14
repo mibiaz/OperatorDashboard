@@ -46,18 +46,12 @@
               <!-- User Profile -->
               <!-- ============================================================== -->
               <li class="nav-item dropdown u-pro">
-                  <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="hidden-md-down">{{authService.decodedToken?.unique_name}}&nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                  <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="hidden-md-down">{{authService.decodedToken?.unique_name | titlecase}}&nbsp;<i class="fa fa-angle-down"></i></span> </a>
                   <div class="dropdown-menu dropdown-menu-right animated flipInY">
                       <!-- text-->
-                      <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                      <a class="dropdown-item"><i class="ti-user"></i> My Profile</a>
                       <!-- text-->
-                      <a href="javascript:void(0)" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
-                      <!-- text-->
-                      <a href="javascript:void(0)" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
-                      <!-- text-->
-                      <div class="dropdown-divider"></div>
-                      <!-- text-->
-                      <a href="javascript:void(0)" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
+                      <a class="dropdown-item"><i class="ti-email"></i> My Messages</a>
                       <!-- text-->
                       <div class="dropdown-divider"></div>
                       <!-- text-->
@@ -85,7 +79,7 @@
       <!-- Sidebar navigation-->
       <nav class="sidebar-nav">
           <ul id="sidebarnav"> 
-              <li> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard <span class="badge badge-pill badge-cyan ml-auto">4</span></span></a></li>                        
+              <li routerLinkActive="router-link-active"> <a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false" [routerLink]="['/home']"  ><i class="icon-speedometer"></i><span class="hide-menu">Dashboard <span class="badge badge-pill badge-cyan ml-auto">4</span></span></a></li>                        
           </ul>
       </nav>
       <!-- End Sidebar navigation -->
